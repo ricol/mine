@@ -21,9 +21,10 @@ object FormColor: TFormColor
     Width = 89
     Height = 32
     Caption = #30830#23450
+    Kind = bkOK
+    NumGlyphs = 2
     TabOrder = 1
     OnClick = BitBtnOKClick
-    Kind = bkOK
   end
   object PanelMain: TPanel
     Left = 8
@@ -64,7 +65,6 @@ object FormColor: TFormColor
       Top = 14
       Width = 145
       Height = 22
-      ItemHeight = 16
       TabOrder = 0
     end
     object CBBackGround: TColorBox
@@ -72,7 +72,6 @@ object FormColor: TFormColor
       Top = 51
       Width = 145
       Height = 22
-      ItemHeight = 16
       TabOrder = 1
     end
     object CBGrid: TColorBox
@@ -80,7 +79,6 @@ object FormColor: TFormColor
       Top = 88
       Width = 145
       Height = 22
-      ItemHeight = 16
       TabOrder = 2
     end
     object CBPressed: TColorBox
@@ -88,7 +86,6 @@ object FormColor: TFormColor
       Top = 126
       Width = 145
       Height = 22
-      ItemHeight = 16
       TabOrder = 3
     end
   end
@@ -100,8 +97,6 @@ object FormColor: TFormColor
     Cancel = True
     Caption = #21462#28040
     Default = True
-    ModalResult = 2
-    TabOrder = 0
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
       0400000000006801000000000000000000001000000000000000000000000000
@@ -119,7 +114,9 @@ object FormColor: TFormColor
       38F338F300003333333333333919333333388333338FFF830000333333333333
       3333333333333333333888330000333333333333333333333333333333333333
       0000}
+    ModalResult = 2
     NumGlyphs = 2
+    TabOrder = 0
   end
   object BitBtnDefault: TBitBtn
     Left = 263
@@ -127,8 +124,9 @@ object FormColor: TFormColor
     Width = 89
     Height = 32
     Caption = #40664#35748
+    Kind = bkIgnore
+    NumGlyphs = 2
     TabOrder = 3
     OnClick = BitBtnDefaultClick
-    Kind = bkIgnore
   end
 end

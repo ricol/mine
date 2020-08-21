@@ -1,4 +1,4 @@
-unit MainUnit;
+unit Main;
 
 {
 CONTACT: WANGXINGHE1983@GMAIL.COM
@@ -97,7 +97,7 @@ var
 
 implementation
 
-uses MyGameUnit, MMSystem, UnitColor;
+uses Game, MMSystem, Color;
 
 {$R *.dfm}
 

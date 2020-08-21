@@ -57,7 +57,7 @@
         <Icon_MainIcon>SaoLei_Icon.ico</Icon_MainIcon>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <Icon_MainIcon>SaoLei_Icon.ico</Icon_MainIcon>
@@ -75,11 +75,11 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="MainUnit.pas">
+        <DCCReference Include="Main.pas">
             <Form>FormMain</Form>
         </DCCReference>
-        <DCCReference Include="MyGameUnit.pas"/>
-        <DCCReference Include="UnitColor.pas">
+        <DCCReference Include="Game.pas"/>
+        <DCCReference Include="Color.pas">
             <Form>FormColor</Form>
         </DCCReference>
         <BuildConfiguration Include="Debug">

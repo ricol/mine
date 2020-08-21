@@ -1,2 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<BorlandProject/>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2020/08/22 02:39:34.314,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\Main.pas=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\MainUnit.pas</Transaction>
+    <Transaction>2020/08/22 02:39:34.314,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\Main.dfm=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\MainUnit.dfm</Transaction>
+    <Transaction>2020/08/22 02:39:38.239,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\Game.pas=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\MyGameUnit.pas</Transaction>
+    <Transaction>2020/08/22 02:39:44.258,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\Color.pas=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\UnitColor.pas</Transaction>
+    <Transaction>2020/08/22 02:39:44.258,C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\Color.dfm=C:\Documents and Settings\wangxinghe\My Documents\Programs\Delphi\Game\mine\UnitColor.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

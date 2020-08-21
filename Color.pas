@@ -1,4 +1,4 @@
-unit UnitColor;
+unit Color;
 
 interface
 
@@ -33,7 +33,7 @@ var
 
 implementation
 
-uses MyGameUnit;
+uses Game;
 
 {$R *.dfm}
 

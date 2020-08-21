@@ -1,4 +1,4 @@
-unit MyGameUnit;
+unit Game;
 
 interface
 

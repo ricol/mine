@@ -2,9 +2,9 @@ program SaoLei;
 
 uses
   Forms,
-  MainUnit in 'MainUnit.pas' {FormMain},
-  MyGameUnit in 'MyGameUnit.pas',
-  UnitColor in 'UnitColor.pas' {FormColor};
+  Main in 'Main.pas' {FormMain},
+  Game in 'Game.pas',
+  Color in 'Color.pas' {FormColor};
 
 {$R *.res}
 
