@@ -64,8 +64,8 @@ type
     procedure MenuGameTopClick(Sender: TObject);
   private
     LeftDown, RightDown, IsFirstTime, CanShowRound: boolean;
-    tmpX, tmpY, tmpShowNum, tmpOPNum, tmpLei, UserTotals, TimeDelay: integer;
-    tmpMouseRect: TRect;
+    fX, fY, fShowNum, fOpNum, fLei, UserTotals, TimeDelay: integer;
+    FMouseRect: TRect;
     procedure ShowOneData(i, j: integer);
     procedure ShowData();
     procedure GameStart();
@@ -141,51 +141,51 @@ end;
 
 procedure TFormMain.ReShow(i, j: integer);
 var
-  II, tmpII, tmpJJ, tmpXX, tmpYY: integer;
-  tmpData: array[1..8] of TPoint;
+  m, n, l, a, b: integer;
+  data: array[1..8] of TPoint;
   AutoShow: boolean;
 begin
   ReShowIJ(i, j);
   AutoShow := false;
-  if (tmpShowNum = tmpLei - tmpOpNum) and MenuAutoShow.Checked then
+  if (fShowNum = fLei - fOpNum) and MenuAutoShow.Checked then
     AutoShow := true;
-  tmpData[1].X := i - 1;
-  tmpData[1].Y := j - 1;
-  tmpData[2].X := i;
-  tmpData[2].Y := j - 1;
-  tmpData[3].X := i + 1;
-  tmpData[3].Y := j - 1;
-  tmpData[4].X := i - 1;
-  tmpData[4].Y := j;
-  tmpData[5].X := i + 1;
-  tmpData[5].Y := j;
-  tmpData[6].X := i - 1;
-  tmpData[6].Y := j + 1;
-  tmpData[7].X := i;
-  tmpData[7].Y := j + 1;
-  tmpData[8].X := i + 1;
-  tmpData[8].Y := j + 1;
-  for II := Low(tmpData) to High(tmpData) do
+  data[1].X := i - 1;
+  data[1].Y := j - 1;
+  data[2].X := i;
+  data[2].Y := j - 1;
+  data[3].X := i + 1;
+  data[3].Y := j - 1;
+  data[4].X := i - 1;
+  data[4].Y := j;
+  data[5].X := i + 1;
+  data[5].Y := j;
+  data[6].X := i - 1;
+  data[6].Y := j + 1;
+  data[7].X := i;
+  data[7].Y := j + 1;
+  data[8].X := i + 1;
+  data[8].Y := j + 1;
+  for m := Low(data) to High(data) do
   begin
-    tmpII := tmpData[II].X;
-    tmpJJ := tmpData[II].Y;
-    if (tmpII <= X - 1) and (tmpII >= 0) and (tmpJJ <= Y - 1) and (tmpJJ >= 0) and
-      (GetDataShow(tmpII, tmpJJ) = SHOW_NO) and (GetDataOP(tmpII, tmpJJ) = OP_NO) then
+    n := data[m].X;
+    l := data[m].Y;
+    if (n <= X - 1) and (n >= 0) and (l <= Y - 1) and (l >= 0) and
+      (GetDataShow(n, l) = SHOW_NO) and (GetDataOP(n, l) = OP_NO) then
     begin
-      tmpXX := IToX(tmpII);
-      tmpYY := JToY(tmpJJ);
+      a := IToX(n);
+      b := JToY(l);
       with MainPaintBox do
       begin
         Canvas.Pen.Color := clGrid;
         Canvas.Brush.Color := clSquare;
-        Canvas.Rectangle(tmpXX, tmpYY, tmpXX + R, tmpYY + R);
+        Canvas.Rectangle(a, b, a + R, b + R);
       end;
       if AutoShow then
       begin
-        SetDataOp(tmpII, tmpJJ, OP_YES);
+        SetDataOp(n, l, OP_YES);
         inc(UserTotals);
         PanelLeft.Caption := IntToStr(TotalLei - UserTotals);
-        ShowOneData(tmpII, tmpJJ);
+        ShowOneData(n, l);
       end;
     end;
   end;
@@ -211,10 +211,10 @@ begin
       Canvas.Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
       Canvas.Font.Color := clBlack;
       Canvas.Font.Size := 12;
-      if tmpLei = 0 then
+      if fLei = 0 then
         Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ')
       else
-        Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ' + IntToStr(tmpLei));
+        Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ' + IntToStr(fLei));
     end;
   end;
 end;
@@ -225,10 +225,10 @@ var
   i, j: integer;
 begin
   if MenuHelpGame.Checked then exit;
-  if (tmpX >= MainPaintBox.Width - 5) or (tmpY >= MainPaintBox.Height - 5) then
+  if (fX >= MainPaintBox.Width - 5) or (fY >= MainPaintBox.Height - 5) then
     exit;
-  i := XToI(tmpX);
-  j := YToJ(tmpY);
+  i := XToI(fX);
+  j := YToJ(fY);
   LeftDown := false;
   RightDown := false;
   try
@@ -236,7 +236,7 @@ begin
     begin
       if MenuSetMouse.Checked then
         UnLockMouse();
-      ReShow(XToI(tmpX), YToJ(tmpY));
+      ReShow(XToI(fX), YToJ(fY));
       CanShowRound := false;
       if (i <> XToI(X)) or (j <> YToJ(Y)) or (GetDataShow(i, j) = SHOW_NO) then
         exit;
@@ -308,9 +308,9 @@ procedure TFormMain.MainPaintBoxMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if MenuHelpGame.Checked then exit;
-  tmpX := X;
-  tmpY := Y;
-  if (tmpX >= MainPaintBox.Width - 5) or (tmpY >= MainPaintBox.Height - 5) then
+  fX := X;
+  fY := Y;
+  if (fX >= MainPaintBox.Width - 5) or (fY >= MainPaintBox.Height - 5) then
     exit;
   if (LeftDown and (Button = mbRight)) or (RightDown and (Button = mbLeft)) then
   begin
@@ -319,14 +319,14 @@ begin
     CanShowRound := true;
     if MenuSetMouse.Checked then
       LockMouse();
-    ToShow(XToI(tmpX), YToJ(tmpY));
+    ToShow(XToI(fX), YToJ(fY));
     exit;
   end;
   if Button = mbLeft then
     LeftDown := true;
   if Button = mbRight then
     RightDown := true;
-  ToShowIJ(XToI(tmpX), YToJ(tmpY));
+  ToShowIJ(XToI(fX), YToJ(fY));
 end;
 
 procedure TFormMain.GameStart;
@@ -469,68 +469,68 @@ end;
 procedure TFormMain.ShowRound(i, j: integer);
 var
   CanShowRound: boolean;
-  tmp: array[1..8] of boolean;
-  tmpData: array[1..8] of TPoint;
-  num, tmpI: integer;
+  data: array[1..8] of boolean;
+  points: array[1..8] of TPoint;
+  num, k: integer;
 begin
   CanShowRound := false;
   num := 0;
   if (GetDataSHOW(i, j) = SHOW_NO) then
     exit;
-  tmpData[1].X := i - 1;
-  tmpData[1].Y := j - 1;
-  tmpData[2].X := i;
-  tmpData[2].Y := j - 1;
-  tmpData[3].X := i + 1;
-  tmpData[3].Y := j - 1;
-  tmpData[4].X := i - 1;
-  tmpData[4].Y := j;
-  tmpData[5].X := i + 1;
-  tmpData[5].Y := j;
-  tmpData[6].X := i - 1;
-  tmpData[6].Y := j + 1;
-  tmpData[7].X := i;
-  tmpData[7].Y := j + 1;
-  tmpData[8].X := i + 1;
-  tmpData[8].Y := j + 1;
-  for tmpI := Low(tmpData) to High(tmpData) do
+  points[1].X := i - 1;
+  points[1].Y := j - 1;
+  points[2].X := i;
+  points[2].Y := j - 1;
+  points[3].X := i + 1;
+  points[3].Y := j - 1;
+  points[4].X := i - 1;
+  points[4].Y := j;
+  points[5].X := i + 1;
+  points[5].Y := j;
+  points[6].X := i - 1;
+  points[6].Y := j + 1;
+  points[7].X := i;
+  points[7].Y := j + 1;
+  points[8].X := i + 1;
+  points[8].Y := j + 1;
+  for k := Low(points) to High(points) do
   begin
-    if (tmpData[tmpI].X >= 0) and (tmpData[tmpI].X <= X - 1) and
-      (tmpData[tmpI].Y >= 0) and (tmpData[tmpI].Y <= Y - 1) and
-      (GetDataOp(tmpData[tmpI].X, tmpData[tmpI].Y) = OP_YES) then
+    if (points[k].X >= 0) and (points[k].X <= X - 1) and
+      (points[k].Y >= 0) and (points[k].Y <= Y - 1) and
+      (GetDataOp(points[k].X, points[k].Y) = OP_YES) then
     begin
       CanShowRound := true;
-      tmp[tmpI] := true;
+      data[k] := true;
       inc(num);
     end
     else
-      tmp[tmpI] := false;
+      data[k] := false;
   end;
   if num <> NumberOfPoint(i, j) then
     CanShowRound := false;
   if not CanShowRound then exit;
-  if (tmp[1] and (GetDataLei(i - 1, j - 1) <> LEI)) or
-    (tmp[2] and (GetDataLei(i, j - 1) <> LEI)) or
-    (tmp[3] and (GetDataLei(i + 1, j - 1) <> LEI)) or
-    (tmp[4] and (GetDataLei(i - 1, j) <> LEI)) or
-    (tmp[5] and (GetDataLei(i + 1, j) <> LEI)) or
-    (tmp[6] and (GetDataLei(i - 1, j + 1) <> LEI)) or
-    (tmp[7] and (GetDataLei(i, j + 1) <> LEI)) or
-    (tmp[8] and (GetDataLei(i + 1, j + 1) <> LEI)) then
+  if (data[1] and (GetDataLei(i - 1, j - 1) <> LEI)) or
+    (data[2] and (GetDataLei(i, j - 1) <> LEI)) or
+    (data[3] and (GetDataLei(i + 1, j - 1) <> LEI)) or
+    (data[4] and (GetDataLei(i - 1, j) <> LEI)) or
+    (data[5] and (GetDataLei(i + 1, j) <> LEI)) or
+    (data[6] and (GetDataLei(i - 1, j + 1) <> LEI)) or
+    (data[7] and (GetDataLei(i, j + 1) <> LEI)) or
+    (data[8] and (GetDataLei(i + 1, j + 1) <> LEI)) then
   begin
     GameOver;
   end
   else
   begin
-    for tmpI := Low(tmpData) to High(tmpData) do
+    for k := Low(points) to High(points) do
     begin
-      if (not tmp[tmpI]) and
-        (tmpData[tmpI].X >= 0) and (tmpData[tmpI].X <= X - 1) and
-        (tmpData[tmpI].Y >= 0) and (tmpData[tmpI].Y <= Y - 1) and
-        (GetDataShow(tmpData[tmpI].X, tmpData[tmpI].Y) <> SHOW_YES) then
+      if (not data[k]) and
+        (points[k].X >= 0) and (points[k].X <= X - 1) and
+        (points[k].Y >= 0) and (points[k].Y <= Y - 1) and
+        (GetDataShow(points[k].X, points[k].Y) <> SHOW_YES) then
       begin
         InitTemp;
-        ShowNumber(tmpData[tmpI].X, tmpData[tmpI].Y);
+        ShowNumber(points[k].X, points[k].Y);
         ShowTemp;
       end;
     end;
@@ -559,8 +559,8 @@ end;
 
 procedure TFormMain.ShowNumber(i, j: integer);
 var
-  tmpI, n: integer;
-  tmpData: array[1..8] of TPoint;
+  m, n: integer;
+  points: array[1..8] of TPoint;
 begin
   n := NumberOfPoint(i, j);
   ShowString(IToX(i), JToY(j), IntToStr(n));
@@ -570,65 +570,65 @@ begin
     else
     begin
       AddToTemp(i, j);
-      tmpData[1].X := i - 1;
-      tmpData[1].Y := j - 1;
-      tmpData[2].X := i;
-      tmpData[2].Y := j - 1;
-      tmpData[3].X := i + 1;
-      tmpData[3].Y := j - 1;
-      tmpData[4].X := i - 1;
-      tmpData[4].Y := j;
-      tmpData[5].X := i + 1;
-      tmpData[5].Y := j;
-      tmpData[6].X := i - 1;
-      tmpData[6].Y := j + 1;
-      tmpData[7].X := i;
-      tmpData[7].Y := j + 1;
-      tmpData[8].X := i + 1;
-      tmpData[8].Y := j + 1;
-      for tmpI := Low(tmpData) to High(tmpData) do
-        if (tmpData[tmpI].X >= 0) and (tmpData[tmpI].X <= X - 1) and
-          (tmpData[tmpI].Y >= 0) and (tmpData[tmpI].Y <= Y - 1) and
-          (NumberOfPoint(tmpData[tmpI].X, tmpData[tmpI].Y) = 0) then
-          ShowNumber(tmpData[tmpI].X, tmpData[tmpI].Y);
+      points[1].X := i - 1;
+      points[1].Y := j - 1;
+      points[2].X := i;
+      points[2].Y := j - 1;
+      points[3].X := i + 1;
+      points[3].Y := j - 1;
+      points[4].X := i - 1;
+      points[4].Y := j;
+      points[5].X := i + 1;
+      points[5].Y := j;
+      points[6].X := i - 1;
+      points[6].Y := j + 1;
+      points[7].X := i;
+      points[7].Y := j + 1;
+      points[8].X := i + 1;
+      points[8].Y := j + 1;
+      for m := Low(points) to High(points) do
+        if (points[m].X >= 0) and (points[m].X <= X - 1) and
+          (points[m].Y >= 0) and (points[m].Y <= Y - 1) and
+          (NumberOfPoint(points[m].X, points[m].Y) = 0) then
+          ShowNumber(points[m].X, points[m].Y);
     end;
   end;
 end;
 
 procedure TFormMain.ShowTemp;
 var
-  k, i, j, tmpI: integer;
-  tmpData: array[1..8] of TPoint;
+  k, i, j, l: integer;
+  points: array[1..8] of TPoint;
 begin
   for k := 0 to NowTempPosition do
   begin
     i := XToI(temp[k].X);
     j := YToJ(temp[k].Y);
-    tmpData[1].X := i - 1;
-    tmpData[1].Y := j - 1;
-    tmpData[2].X := i;
-    tmpData[2].Y := j - 1;
-    tmpData[3].X := i + 1;
-    tmpData[3].Y := j - 1;
-    tmpData[4].X := i - 1;
-    tmpData[4].Y := j;
-    tmpData[5].X := i + 1;
-    tmpData[5].Y := j;
-    tmpData[6].X := i - 1;
-    tmpData[6].Y := j + 1;
-    tmpData[7].X := i;
-    tmpData[7].Y := j + 1;
-    tmpData[8].X := i + 1;
-    tmpData[8].Y := j + 1;
-    for tmpI := Low(tmpData) to High(tmpData) do
+    points[1].X := i - 1;
+    points[1].Y := j - 1;
+    points[2].X := i;
+    points[2].Y := j - 1;
+    points[3].X := i + 1;
+    points[3].Y := j - 1;
+    points[4].X := i - 1;
+    points[4].Y := j;
+    points[5].X := i + 1;
+    points[5].Y := j;
+    points[6].X := i - 1;
+    points[6].Y := j + 1;
+    points[7].X := i;
+    points[7].Y := j + 1;
+    points[8].X := i + 1;
+    points[8].Y := j + 1;
+    for l := Low(points) to High(points) do
     begin
-      if (tmpData[tmpI].X >= 0) and (tmpData[tmpI].X <= X - 1) and
-         (tmpData[tmpI].Y >= 0) and (tmpData[tmpI].Y <= Y - 1) and
-         (Data[tmpData[tmpI].X][tmpData[tmpI].Y].FLei <> LEI) then
-        ShowString(IToX(tmpData[tmpI].X),
-                   JToY(tmpData[tmpI].Y),
-                   IntToStr(NumberOfPoint(tmpData[tmpI].X,
-                   tmpData[tmpI].Y)));
+      if (points[l].X >= 0) and (points[l].X <= X - 1) and
+         (points[l].Y >= 0) and (points[l].Y <= Y - 1) and
+         (Data[points[l].X][points[l].Y].FLei <> LEI) then
+        ShowString(IToX(points[l].X),
+                   JToY(points[l].Y),
+                   IntToStr(NumberOfPoint(points[l].X,
+                   points[l].Y)));
     end;
   end;
 end;
@@ -641,49 +641,49 @@ end;
 
 procedure TFormMain.ToShow(i, j: integer);
 var
-  II, tmpII, tmpJJ, tmpXX, tmpYY: integer;
-  tmpData: array[1..8] of TPoint;
+  l, m, n, p, q: integer;
+  points: array[1..8] of TPoint;
 begin
-  tmpShowNum := 0;
-  tmpOpNum := 0;
+  fShowNum := 0;
+  fOpNum := 0;
   ToShowIJ(i, j);
-  tmpData[1].X := i - 1;
-  tmpData[1].Y := j - 1;
-  tmpData[2].X := i;
-  tmpData[2].Y := j - 1;
-  tmpData[3].X := i + 1;
-  tmpData[3].Y := j - 1;
-  tmpData[4].X := i - 1;
-  tmpData[4].Y := j;
-  tmpData[5].X := i + 1;
-  tmpData[5].Y := j;
-  tmpData[6].X := i - 1;
-  tmpData[6].Y := j + 1;
-  tmpData[7].X := i;
-  tmpData[7].Y := j + 1;
-  tmpData[8].X := i + 1;
-  tmpData[8].Y := j + 1;
-  for II := Low(tmpData) to High(tmpData) do
+  points[1].X := i - 1;
+  points[1].Y := j - 1;
+  points[2].X := i;
+  points[2].Y := j - 1;
+  points[3].X := i + 1;
+  points[3].Y := j - 1;
+  points[4].X := i - 1;
+  points[4].Y := j;
+  points[5].X := i + 1;
+  points[5].Y := j;
+  points[6].X := i - 1;
+  points[6].Y := j + 1;
+  points[7].X := i;
+  points[7].Y := j + 1;
+  points[8].X := i + 1;
+  points[8].Y := j + 1;
+  for l := Low(points) to High(points) do
   begin
-    tmpII := tmpData[II].X;
-    tmpJJ := tmpData[II].Y;
-    if (tmpII <= X - 1) and (tmpII >= 0) and (tmpJJ <= Y - 1) and (tmpJJ >= 0) and
-      (GetDataShow(tmpII, tmpJJ) = SHOW_NO) then
+    m := points[l].X;
+    n := points[l].Y;
+    if (m <= X - 1) and (m >= 0) and (n <= Y - 1) and (n >= 0) and
+      (GetDataShow(m, n) = SHOW_NO) then
     begin
-      if GetDataOP(tmpII, tmpJJ) = OP_NO then
+      if GetDataOP(m, n) = OP_NO then
       begin
-        inc(tmpShowNum);
-        tmpXX := IToX(tmpII);
-        tmpYY := JToY(tmpJJ);
+        inc(fShowNum);
+        p := IToX(m);
+        q := JToY(n);
         with MainPaintBox do
         begin
           Canvas.Pen.Color := clPressed;
           Canvas.Brush.Color := clPressed;
-          Canvas.Rectangle(tmpXX, tmpYY, tmpXX + R, tmpYY + R);
+          Canvas.Rectangle(p, q, p + R, q + R);
         end;
       end
       else
-        inc(tmpOpNum);
+        inc(fOpNum);
     end;
   end;
 end;
@@ -701,7 +701,7 @@ begin
   end
   else if GetDataOP(i, j) = OP_NO then
   begin
-    tmpLei := NumberOfPoint(i, j);
+    fLei := NumberOfPoint(i, j);
     with MainPaintBox do
     begin
       Canvas.Pen.Color := clBlack;
@@ -709,10 +709,10 @@ begin
       Canvas.Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
       Canvas.Font.Color := clBlack;
       Canvas.Font.Size := 12;
-      if tmpLei = 0 then
+      if fLei = 0 then
         Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ')
       else
-        Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ' + IntToStr(tmpLei));
+        Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ' + IntToStr(fLei));
     end;
   end;
 end;
@@ -801,36 +801,36 @@ end;
 
 procedure TFormMain.MenuGameSelfClick(Sender: TObject);
 var
-  tmpUserLei, tmpUserX, tmpUserY: integer;
+  userLei, userX, userY: integer;
 begin
   if MessageBox(Self.Handle, '要结束本局游戏，确定吗？', '注意', MB_OKCANCEL) <> ID_OK then
     exit;
   try
-    tmpUserX := StrToInt(InputBox('信息', '请输入横向格子数目：             ', IntToStr(X)));
+    userX := StrToInt(InputBox('信息', '请输入横向格子数目：             ', IntToStr(X)));
   except
     MessageBox(Self.Handle, '您输入的数据非法，将使用默认值!', '出错', MB_OK or MB_ICONERROR);
-    tmpUserX := 20;
+    userX := 20;
   end;
   try
-    tmpUserY := StrToInt(InputBox('信息', '请输入纵向格子数目：              ', IntToStr(Y)));
+    userY := StrToInt(InputBox('信息', '请输入纵向格子数目：              ', IntToStr(Y)));
   except
     MessageBox(Self.Handle, '您输入的数据非法，将使用默认值!', '出错', MB_OK or MB_ICONERROR);
-    tmpUserY := 10;
+    userY := 10;
   end;
   try
-    tmpUserLei := StrToInt(InputBox('信息', '请输入地雷数目：           ', IntToStr(TotalLei)));
-    if tmpUserLei > tmpUserX * tmpUserY then
+    userLei := StrToInt(InputBox('信息', '请输入地雷数目：           ', IntToStr(TotalLei)));
+    if userLei > userX * userY then
     begin
       MessageBox(Self.Handle, '输入的地雷数目超出最大数目，将使用最大值.', '注意', MB_OK or MB_ICONINFORMATION);
-      tmpUserLei := tmpUserX * tmpUserY;
+      userLei := userX * userY;
     end;
   except
     MessageBox(Self.Handle, '您输入的数据非法，将使用默认值!', '出错', MB_OK or MB_ICONERROR);
-    tmpUserLei := 20;
+    userLei := 20;
   end;
-  TotalLei := tmpUserLei;
-  X := tmpUserX;
-  Y := tmpUserY;
+  TotalLei := userLei;
+  X := userX;
+  Y := userY;
   MessageBox(Self.Handle, PChar('开始启动自定义游戏：' + #$D + #$A + #$D + #$A +
     '横向格子数目：' + IntToStr(X) + #$D + #$A +
     '纵向格子数目：' + IntToStr(Y) + #$D + #$A +
@@ -842,23 +842,23 @@ end;
 
 procedure TFormMain.LockMouse;
 var
-  tmpMousePos: TPoint;
+  pos: TPoint;
 begin
-  GetCursorPos(tmpMousePos);
-  tmpMouseRect.Left := tmpMousePos.X;
-  tmpMouseRect.Top := tmpMousePos.Y;
-  tmpMouseRect.Right := tmpMouseRect.Left + 1;
-  tmpMouseRect.Bottom := tmpMouseRect.Top + 1;
-  ClipCursor(@tmpMouseRect);
+  GetCursorPos(pos);
+  FMouseRect.Left := pos.X;
+  FMouseRect.Top := pos.Y;
+  FMouseRect.Right := FMouseRect.Left + 1;
+  FMouseRect.Bottom := FMouseRect.Top + 1;
+  ClipCursor(@FMouseRect);
 end;
 
 procedure TFormMain.UnLockMouse;
 begin
-  tmpMouseRect.Left := 0;
-  tmpMouseRect.Top := 0;
-  tmpMouseRect.Right := Screen.Width;
-  tmpMouseRect.Bottom := Screen.Height;
-  ClipCursor(@tmpMouseRect);
+  FMouseRect.Left := 0;
+  FMouseRect.Top := 0;
+  FMouseRect.Right := Screen.Width;
+  FMouseRect.Bottom := Screen.Height;
+  ClipCursor(@FMouseRect);
 end;
 
 procedure TFormMain.MenuSetMouseClick(Sender: TObject);

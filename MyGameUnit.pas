@@ -51,7 +51,7 @@ implementation
 
 procedure InitArray();
 var
-  i, j, temp: integer;
+  i, j, k: integer;
 begin
   SetLength(Data, X, Y);
   randomize;
@@ -62,15 +62,15 @@ begin
       Data[i, j].Fop := OP_NO;
       Data[i, j].FShow := SHOW_NO;
     end;
-  temp := 0;
-  while temp < TotalLei do
+  k := 0;
+  while k < TotalLei do
   begin
     repeat
       i := random(X);
       j := random(Y);
     until data[i][j].FLei <> LEI;
     data[i][j].FLei := LEI;
-    inc(temp);
+    inc(k);
   end;
 end;
 
@@ -133,31 +133,31 @@ end;
 
 function NumberOfPoint(i, j: integer): integer;
 var
-  num, tmpI: integer;
-  tmpData: array[1..8] of TPoint;
+  num, k: integer;
+  points: array[1..8] of TPoint;
 begin
   num := 0;
-  tmpData[1].X := i - 1;
-  tmpData[1].Y := j - 1;
-  tmpData[2].X := i;
-  tmpData[2].Y := j - 1;
-  tmpData[3].X := i + 1;
-  tmpData[3].Y := j - 1;
-  tmpData[4].X := i - 1;
-  tmpData[4].Y := j;
-  tmpData[5].X := i + 1;
-  tmpData[5].Y := j;
-  tmpData[6].X := i - 1;
-  tmpData[6].Y := j + 1;
-  tmpData[7].X := i;
-  tmpData[7].Y := j + 1;
-  tmpData[8].X := i + 1;
-  tmpData[8].Y := j + 1;
-  for tmpI := Low(tmpData) to High(tmpData) do
+  points[1].X := i - 1;
+  points[1].Y := j - 1;
+  points[2].X := i;
+  points[2].Y := j - 1;
+  points[3].X := i + 1;
+  points[3].Y := j - 1;
+  points[4].X := i - 1;
+  points[4].Y := j;
+  points[5].X := i + 1;
+  points[5].Y := j;
+  points[6].X := i - 1;
+  points[6].Y := j + 1;
+  points[7].X := i;
+  points[7].Y := j + 1;
+  points[8].X := i + 1;
+  points[8].Y := j + 1;
+  for k := Low(points) to High(points) do
   begin
-    if (tmpData[tmpI].X >= 0) and (tmpData[tmpI].X <= X - 1) and
-      (tmpData[tmpI].Y >= 0) and (tmpData[tmpI].Y <= Y - 1) and
-      (Data[tmpData[tmpI].X][tmpData[tmpI].Y].FLei = LEI) then
+    if (points[k].X >= 0) and (points[k].X <= X - 1) and
+      (points[k].Y >= 0) and (points[k].Y <= Y - 1) and
+      (Data[points[k].X][points[k].Y].FLei = LEI) then
       inc(num);
   end;
   result := num;
