@@ -1,7 +1,7 @@
 unit Main;
 
 {
-CONTACT: WANGXINGHE1983@GMAIL.COM
+  CONTACT: WANGXINGHE1983@GMAIL.COM
 }
 
 interface
@@ -42,10 +42,8 @@ type
     MenuColorSet: TMenuItem;
     procedure MenuGameExitClick(Sender: TObject);
     procedure MenuHelpAboutClick(Sender: TObject);
-    procedure MainPaintBoxMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure MainPaintBoxMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure MainPaintBoxMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure MainPaintBoxMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure SBStartClick(Sender: TObject);
@@ -64,29 +62,29 @@ type
     procedure MenuGameTopClick(Sender: TObject);
   private
     LeftDown, RightDown, IsFirstTime, CanShowRound: boolean;
-    fX, fY, fShowNum, fOpNum, fLei, UserTotals, TimeDelay: integer;
+    fX, fY, fShowNum, fOpNum, fLei, UserTotals, TimeDelay: Integer;
     FMouseRect: TRect;
-    procedure ShowOneData(i, j: integer);
+    procedure ShowOneData(i, j: Integer);
     procedure ShowData();
     procedure GameStart();
     procedure GameEnd();
     procedure GameOver();
     procedure GameSuccess();
     function CheckGame(): boolean;
-    procedure ShowNumber(i, j: integer);
-    procedure ShowString(x, y: integer; s: string);
+    procedure ShowNumber(i, j: Integer);
+    procedure ShowString(X, Y: Integer; s: string);
     procedure ShowTemp();
-    procedure ShowRound(i, j: integer);
-    procedure AddToTemp(i, j: integer);
+    procedure ShowRound(i, j: Integer);
+    procedure AddToTemp(i, j: Integer);
     procedure InitTemp();
     procedure FreeTemp();
-    procedure ReShow(i, j: integer);
-    procedure ToShow(i, j: integer);
-    function InTemp(i, j: integer): boolean;
+    procedure ReShow(i, j: Integer);
+    procedure ToShow(i, j: Integer);
+    function InTemp(i, j: Integer): boolean;
     procedure LockMouse();
     procedure UnLockMouse();
-    procedure ToShowIJ(i, j: integer);
-    procedure ReShowIJ(i, j: integer);
+    procedure ToShowIJ(i, j: Integer);
+    procedure ReShowIJ(i, j: Integer);
     { Private declarations }
   public
     { Public declarations }
@@ -109,14 +107,17 @@ end;
 procedure TFormMain.MenuColorSetClick(Sender: TObject);
 begin
   FormColor := TFormColor.Create(Application);
-  try
-    FormColor.CBSquare.Selected := clSquare;
-    FormColor.CBBackGround.Selected := clBackGround;
-    FormColor.CBGrid.Selected := clGrid;
-    FormColor.CBPressed.Selected := clPressed;
-    FormColor.ShowModal;
-  finally
-    FormColor.Free;
+  with FormColor do
+  begin
+    try
+      CBSquare.Selected := clSquare;
+      CBBackGround.Selected := clBackGround;
+      CBGrid.Selected := clGrid;
+      CBPressed.Selected := clPressed;
+      ShowModal;
+    finally
+      Free;
+    end;
   end;
   ShowData();
 end;
@@ -128,9 +129,7 @@ end;
 
 procedure TFormMain.MenuHelpAboutClick(Sender: TObject);
 begin
-  MessageBox(Self.Handle, '游戏名称 - 扫雷游戏' + sLineBreak +
-                          '开发者   - RICOL' + sLineBreak +
-                          '联系     - WANGXINGHE1983@GMAIL.COM', '关于', MB_OK);
+  MessageBox(Self.Handle, '游戏名称 - 扫雷游戏' + sLineBreak + '开发者   - RICOL' + sLineBreak + '联系     - WANGXINGHE1983@GMAIL.COM', '关于', MB_OK);
 end;
 
 procedure TFormMain.MenuHelpGameClick(Sender: TObject);
@@ -139,10 +138,10 @@ begin
   ShowData;
 end;
 
-procedure TFormMain.ReShow(i, j: integer);
+procedure TFormMain.ReShow(i, j: Integer);
 var
-  m, n, l, a, b: integer;
-  data: array[1..8] of TPoint;
+  m, n, l, a, b: Integer;
+  data: array [1 .. 8] of TPoint;
   AutoShow: boolean;
 begin
   ReShowIJ(i, j);
@@ -169,16 +168,15 @@ begin
   begin
     n := data[m].X;
     l := data[m].Y;
-    if (n <= X - 1) and (n >= 0) and (l <= Y - 1) and (l >= 0) and
-      (GetDataShow(n, l) = SHOW_NO) and (GetDataOP(n, l) = OP_NO) then
+    if (n <= X - 1) and (n >= 0) and (l <= Y - 1) and (l >= 0) and (GetDataShow(n, l) = SHOW_NO) and (GetDataOP(n, l) = OP_NO) then
     begin
       a := IToX(n);
       b := JToY(l);
-      with MainPaintBox do
+      with MainPaintBox.Canvas do
       begin
-        Canvas.Pen.Color := clGrid;
-        Canvas.Brush.Color := clSquare;
-        Canvas.Rectangle(a, b, a + R, b + R);
+        Pen.Color := clGrid;
+        Brush.Color := clSquare;
+        Rectangle(a, b, a + R, b + R);
       end;
       if AutoShow then
       begin
@@ -191,40 +189,40 @@ begin
   end;
 end;
 
-procedure TFormMain.ReShowIJ(i, j: integer);
+procedure TFormMain.ReShowIJ(i, j: Integer);
 begin
   if (GetDataShow(i, j) = SHOW_NO) and (GetDataOP(i, j) = OP_NO) then
   begin
-    with MainPaintBox do
+    with MainPaintBox.Canvas do
     begin
-      Canvas.Pen.Color := clGrid;
-      Canvas.Brush.Color := clSquare;
-      Canvas.Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
+      Pen.Color := clGrid;
+      Brush.Color := clSquare;
+      Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
     end;
   end
   else if (GetDataOP(i, j) = OP_NO) then
   begin
-    with MainPaintBox do
+    with MainPaintBox.Canvas do
     begin
-      Canvas.Pen.Color := clGrid;
-      Canvas.Brush.Color := clBackGround;
-      Canvas.Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
-      Canvas.Font.Color := clBlack;
-      Canvas.Font.Size := 12;
+      Pen.Color := clGrid;
+      Brush.Color := clBackGround;
+      Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
+      Font.Color := clBlack;
+      Font.Size := 12;
       if fLei = 0 then
-        Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ')
+        TextOut(IToX(i) + 2, JToY(j) + 2, ' ')
       else
-        Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ' + IntToStr(fLei));
+        TextOut(IToX(i) + 2, JToY(j) + 2, ' ' + IntToStr(fLei));
     end;
   end;
 end;
 
-procedure TFormMain.MainPaintBoxMouseUp(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TFormMain.MainPaintBoxMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
-  i, j: integer;
+  i, j: Integer;
 begin
-  if MenuHelpGame.Checked then exit;
+  if MenuHelpGame.Checked then
+    exit;
   if (fX >= MainPaintBox.Width - 5) or (fY >= MainPaintBox.Height - 5) then
     exit;
   i := XToI(fX);
@@ -252,7 +250,7 @@ begin
       exit;
     if (Button = mbRight) and (GetDataShow(i, j) <> SHOW_YES) then
     begin
-      if GetDataOp(i, j) = OP_YES then
+      if GetDataOP(i, j) = OP_YES then
       begin
         SetDataOp(i, j, OP_NO);
         Dec(UserTotals);
@@ -260,7 +258,7 @@ begin
       else
       begin
         SetDataOp(i, j, OP_YES);
-        Inc(UserTotals);
+        inc(UserTotals);
       end;
       PanelLeft.Caption := IntToStr(TotalLei - UserTotals);
       if CheckGame then
@@ -270,10 +268,9 @@ begin
       end;
       ShowOneData(i, j);
     end
-    else if (Button = mbLeft) and (GetDataShow(i, j) = SHOW_NO) and
-      (GetDataOP(i, j) = OP_NO) then
+    else if (Button = mbLeft) and (GetDataShow(i, j) = SHOW_NO) and (GetDataOP(i, j) = OP_NO) then
     begin
-      if data[i, j].FLei = LEI then
+      if data[i, j].fLei = LEI then
       begin
         if IsFirstTime then
         begin
@@ -304,10 +301,10 @@ begin
   end;
 end;
 
-procedure TFormMain.MainPaintBoxMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TFormMain.MainPaintBoxMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  if MenuHelpGame.Checked then exit;
+  if MenuHelpGame.Checked then
+    exit;
   fX := X;
   fY := Y;
   if (fX >= MainPaintBox.Width - 5) or (fY >= MainPaintBox.Height - 5) then
@@ -358,7 +355,7 @@ end;
 
 function TFormMain.CheckGame: boolean;
 var
-  i, j: integer;
+  i, j: Integer;
 begin
   result := true;
   for i := 0 to X - 1 do
@@ -426,56 +423,58 @@ end;
 
 procedure TFormMain.ShowData;
 var
-  i, j: integer;
+  i, j: Integer;
 begin
   for i := 0 to X - 1 do
     for j := 0 to Y - 1 do
       ShowOneData(i, j);
 end;
 
-procedure TFormMain.ShowOneData(i, j: integer);
+procedure TFormMain.ShowOneData(i, j: Integer);
 begin
-  if (GetDataShow(i, j) = SHOW_NO) and (GetDataOp(i, j) = OP_NO) then
+  with MainPaintBox.Canvas do
   begin
-    MainPaintBox.Canvas.Pen.Color := clGrid;
-    MainPaintBox.Canvas.Brush.Color := clSquare;
-    MainPaintBox.Canvas.Rectangle(ItoX(i), JtoY(j), ItoX(i) + R, JtoY(j) + R);
-  end
-  else if (GetDataShow(i, j) = SHOW_NO) and (GetDataOp(i, j) = OP_YES) then
-  begin
-    MainPaintBox.Canvas.Pen.Color := clGrid;
-    MainPaintBox.Canvas.Brush.Color := clSquare;
-    MainPaintBox.Canvas.Rectangle(ItoX(i), JtoY(j), ItoX(i) + R, JtoY(j) + R);
-    MainPaintBox.Canvas.Pen.Color := clRed;
-    MainPaintBox.Canvas.Brush.Color := CLRED;
-    MainPaintBox.Canvas.Rectangle(ItoX(i) + R div 3, JtoY(j) + R div 3,
-      ItoX(i) + R div 3 + R div 3, JtoY(j) + R div 3 + R div 3);
-  end
-  else if GetDataShow(i, j) = SHOW_YES then
-  begin
-    MainPaintBox.Canvas.Pen.Color := clGrid;
-    MainPaintBox.Canvas.Brush.Color := clBackGround;
-    MainPaintBox.Canvas.Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
-    ShowString(IToX(i), JToY(j), IntToStr(NumberOfPoint(i, j)));
-  end;
-  if MenuHelpGame.Checked and (GetDataLei(i, j) = LEI) then
-  begin
-    MainPaintBox.Canvas.Pen.Color := clGrid;
-    MainPaintBox.Canvas.Brush.Color := CLRED;
-    MainPaintBox.Canvas.Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
+    if (GetDataShow(i, j) = SHOW_NO) and (GetDataOP(i, j) = OP_NO) then
+    begin
+      Pen.Color := clGrid;
+      Brush.Color := clSquare;
+      Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
+    end
+    else if (GetDataShow(i, j) = SHOW_NO) and (GetDataOP(i, j) = OP_YES) then
+    begin
+      Pen.Color := clGrid;
+      Brush.Color := clSquare;
+      Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
+      Pen.Color := clRed;
+      Brush.Color := clRed;
+      Rectangle(IToX(i) + R div 3, JToY(j) + R div 3, IToX(i) + R div 3 + R div 3, JToY(j) + R div 3 + R div 3);
+    end
+    else if GetDataShow(i, j) = SHOW_YES then
+    begin
+      Pen.Color := clGrid;
+      Brush.Color := clBackGround;
+      Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
+      ShowString(IToX(i), JToY(j), IntToStr(NumberOfPoint(i, j)));
+    end;
+    if MenuHelpGame.Checked and (GetDataLei(i, j) = LEI) then
+    begin
+      Pen.Color := clGrid;
+      Brush.Color := clRed;
+      Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
+    end;
   end;
 end;
 
-procedure TFormMain.ShowRound(i, j: integer);
+procedure TFormMain.ShowRound(i, j: Integer);
 var
   CanShowRound: boolean;
-  data: array[1..8] of boolean;
-  points: array[1..8] of TPoint;
-  num, k: integer;
+  data: array [1 .. 8] of boolean;
+  points: array [1 .. 8] of TPoint;
+  num, k: Integer;
 begin
   CanShowRound := false;
   num := 0;
-  if (GetDataSHOW(i, j) = SHOW_NO) then
+  if (GetDataShow(i, j) = SHOW_NO) then
     exit;
   points[1].X := i - 1;
   points[1].Y := j - 1;
@@ -495,9 +494,7 @@ begin
   points[8].Y := j + 1;
   for k := Low(points) to High(points) do
   begin
-    if (points[k].X >= 0) and (points[k].X <= X - 1) and
-      (points[k].Y >= 0) and (points[k].Y <= Y - 1) and
-      (GetDataOp(points[k].X, points[k].Y) = OP_YES) then
+    if (points[k].X >= 0) and (points[k].X <= X - 1) and (points[k].Y >= 0) and (points[k].Y <= Y - 1) and (GetDataOP(points[k].X, points[k].Y) = OP_YES) then
     begin
       CanShowRound := true;
       data[k] := true;
@@ -508,15 +505,11 @@ begin
   end;
   if num <> NumberOfPoint(i, j) then
     CanShowRound := false;
-  if not CanShowRound then exit;
-  if (data[1] and (GetDataLei(i - 1, j - 1) <> LEI)) or
-    (data[2] and (GetDataLei(i, j - 1) <> LEI)) or
-    (data[3] and (GetDataLei(i + 1, j - 1) <> LEI)) or
-    (data[4] and (GetDataLei(i - 1, j) <> LEI)) or
-    (data[5] and (GetDataLei(i + 1, j) <> LEI)) or
-    (data[6] and (GetDataLei(i - 1, j + 1) <> LEI)) or
-    (data[7] and (GetDataLei(i, j + 1) <> LEI)) or
-    (data[8] and (GetDataLei(i + 1, j + 1) <> LEI)) then
+  if not CanShowRound then
+    exit;
+  if (data[1] and (GetDataLei(i - 1, j - 1) <> LEI)) or (data[2] and (GetDataLei(i, j - 1) <> LEI)) or (data[3] and (GetDataLei(i + 1, j - 1) <> LEI)) or
+    (data[4] and (GetDataLei(i - 1, j) <> LEI)) or (data[5] and (GetDataLei(i + 1, j) <> LEI)) or (data[6] and (GetDataLei(i - 1, j + 1) <> LEI)) or
+    (data[7] and (GetDataLei(i, j + 1) <> LEI)) or (data[8] and (GetDataLei(i + 1, j + 1) <> LEI)) then
   begin
     GameOver;
   end
@@ -524,9 +517,7 @@ begin
   begin
     for k := Low(points) to High(points) do
     begin
-      if (not data[k]) and
-        (points[k].X >= 0) and (points[k].X <= X - 1) and
-        (points[k].Y >= 0) and (points[k].Y <= Y - 1) and
+      if (not data[k]) and (points[k].X >= 0) and (points[k].X <= X - 1) and (points[k].Y >= 0) and (points[k].Y <= Y - 1) and
         (GetDataShow(points[k].X, points[k].Y) <> SHOW_YES) then
       begin
         InitTemp;
@@ -542,31 +533,35 @@ begin
   GameStart;
 end;
 
-procedure TFormMain.ShowString(x, y: integer; s: string);
+procedure TFormMain.ShowString(X, Y: Integer; s: string);
 begin
-  if (GetDataOP(XToI(x), YToJ(Y)) = OP_YES) then
+  if (GetDataOP(XToI(X), YToJ(Y)) = OP_YES) then
     exit;
-  MainPaintBox.Canvas.Pen.Color := CLBLACK;
-  MainPaintBox.Canvas.Brush.Color := CLBTNFACE;
-  MainPaintBox.Canvas.Rectangle(x, y, x + r, y + r);
-  if s = '0' then
-    s := '';
-  s := ' ' + s;
-  MainPaintBox.Canvas.Font.Size := 12;
-  MainPaintBox.Canvas.TextOut(x + 2, y + 2, s);
-  SetDataShow(XToI(x), YToJ(y), SHOW_YES);
+  with MainPaintBox.Canvas do
+  begin
+    Pen.Color := clBlack;
+    Brush.Color := CLBTNFACE;
+    Rectangle(X, Y, X + R, Y + R);
+    if s = '0' then
+      s := '';
+    s := ' ' + s;
+    Font.Size := 12;
+    TextOut(X + 2, Y + 2, s);
+  end;
+  SetDataShow(XToI(X), YToJ(Y), SHOW_YES);
 end;
 
-procedure TFormMain.ShowNumber(i, j: integer);
+procedure TFormMain.ShowNumber(i, j: Integer);
 var
-  m, n: integer;
-  points: array[1..8] of TPoint;
+  m, n: Integer;
+  points: array [1 .. 8] of TPoint;
 begin
   n := NumberOfPoint(i, j);
   ShowString(IToX(i), JToY(j), IntToStr(n));
   if n = 0 then
   begin
-    if InTemp(i, j) then exit
+    if InTemp(i, j) then
+      exit
     else
     begin
       AddToTemp(i, j);
@@ -587,9 +582,8 @@ begin
       points[8].X := i + 1;
       points[8].Y := j + 1;
       for m := Low(points) to High(points) do
-        if (points[m].X >= 0) and (points[m].X <= X - 1) and
-          (points[m].Y >= 0) and (points[m].Y <= Y - 1) and
-          (NumberOfPoint(points[m].X, points[m].Y) = 0) then
+        if (points[m].X >= 0) and (points[m].X <= X - 1) and (points[m].Y >= 0) and (points[m].Y <= Y - 1) and (NumberOfPoint(points[m].X, points[m].Y) = 0)
+        then
           ShowNumber(points[m].X, points[m].Y);
     end;
   end;
@@ -597,8 +591,8 @@ end;
 
 procedure TFormMain.ShowTemp;
 var
-  k, i, j, l: integer;
-  points: array[1..8] of TPoint;
+  k, i, j, l: Integer;
+  points: array [1 .. 8] of TPoint;
 begin
   for k := 0 to NowTempPosition do
   begin
@@ -622,13 +616,8 @@ begin
     points[8].Y := j + 1;
     for l := Low(points) to High(points) do
     begin
-      if (points[l].X >= 0) and (points[l].X <= X - 1) and
-         (points[l].Y >= 0) and (points[l].Y <= Y - 1) and
-         (Data[points[l].X][points[l].Y].FLei <> LEI) then
-        ShowString(IToX(points[l].X),
-                   JToY(points[l].Y),
-                   IntToStr(NumberOfPoint(points[l].X,
-                   points[l].Y)));
+      if (points[l].X >= 0) and (points[l].X <= X - 1) and (points[l].Y >= 0) and (points[l].Y <= Y - 1) and (data[points[l].X][points[l].Y].fLei <> LEI) then
+        ShowString(IToX(points[l].X), JToY(points[l].Y), IntToStr(NumberOfPoint(points[l].X, points[l].Y)));
     end;
   end;
 end;
@@ -639,10 +628,10 @@ begin
   PanelTimeDelay.Caption := IntToStr(TimeDelay);
 end;
 
-procedure TFormMain.ToShow(i, j: integer);
+procedure TFormMain.ToShow(i, j: Integer);
 var
-  l, m, n, p, q: integer;
-  points: array[1..8] of TPoint;
+  l, m, n, p, q: Integer;
+  points: array [1 .. 8] of TPoint;
 begin
   fShowNum := 0;
   fOpNum := 0;
@@ -667,8 +656,7 @@ begin
   begin
     m := points[l].X;
     n := points[l].Y;
-    if (m <= X - 1) and (m >= 0) and (n <= Y - 1) and (n >= 0) and
-      (GetDataShow(m, n) = SHOW_NO) then
+    if (m <= X - 1) and (m >= 0) and (n <= Y - 1) and (n >= 0) and (GetDataShow(m, n) = SHOW_NO) then
     begin
       if GetDataOP(m, n) = OP_NO then
       begin
@@ -688,50 +676,50 @@ begin
   end;
 end;
 
-procedure TFormMain.ToShowIJ(i, j: integer);
+procedure TFormMain.ToShowIJ(i, j: Integer);
 begin
   if (GetDataShow(i, j) = SHOW_NO) and (GetDataOP(i, j) = OP_NO) then
   begin
-    with MainPaintBox do
+    with MainPaintBox.Canvas do
     begin
-      Canvas.Pen.Color := clPressed;
-      Canvas.Brush.Color := clPressed;
-      Canvas.Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
+      Pen.Color := clPressed;
+      Brush.Color := clPressed;
+      Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
     end;
   end
   else if GetDataOP(i, j) = OP_NO then
   begin
     fLei := NumberOfPoint(i, j);
-    with MainPaintBox do
+    with MainPaintBox.Canvas do
     begin
-      Canvas.Pen.Color := clBlack;
-      Canvas.Brush.Color := clWhite;
-      Canvas.Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
-      Canvas.Font.Color := clBlack;
-      Canvas.Font.Size := 12;
+      Pen.Color := clBlack;
+      Brush.Color := clWhite;
+      Rectangle(IToX(i), JToY(j), IToX(i) + R, JToY(j) + R);
+      Font.Color := clBlack;
+      Font.Size := 12;
       if fLei = 0 then
-        Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ')
+        TextOut(IToX(i) + 2, JToY(j) + 2, ' ')
       else
-        Canvas.TextOut(IToX(i) + 2, JToY(j) + 2, ' ' + IntToStr(fLei));
+        TextOut(IToX(i) + 2, JToY(j) + 2, ' ' + IntToStr(fLei));
     end;
   end;
 end;
 
-procedure TFormMain.AddToTemp(i, j: integer);
+procedure TFormMain.AddToTemp(i, j: Integer);
 begin
-  Inc(NowTempPosition);
+  inc(NowTempPosition);
   temp[NowTempPosition].X := IToX(i);
   temp[NowTempPosition].Y := JToY(j);
   ShowNumber(i, j);
 end;
 
-function TFormMain.InTemp(i, j: integer): boolean;
+function TFormMain.InTemp(i, j: Integer): boolean;
 var
-  k: integer;
+  k: Integer;
 begin
   result := false;
   for k := 0 to NowTempPosition do
-    if (Temp[k].X = IToX(i)) and (Temp[k].Y = JToY(j)) then
+    if (temp[k].X = IToX(i)) and (temp[k].Y = JToY(j)) then
     begin
       result := true;
       exit;
@@ -740,7 +728,7 @@ end;
 
 procedure TFormMain.InitTemp;
 var
-  i: integer;
+  i: Integer;
 begin
   TMPMAX := X * Y;
   SetLength(temp, TMPMAX);
@@ -801,7 +789,7 @@ end;
 
 procedure TFormMain.MenuGameSelfClick(Sender: TObject);
 var
-  userLei, userX, userY: integer;
+  userLei, userX, userY: Integer;
 begin
   if MessageBox(Self.Handle, '要结束本局游戏，确定吗？', '注意', MB_OKCANCEL) <> ID_OK then
     exit;
@@ -831,10 +819,8 @@ begin
   TotalLei := userLei;
   X := userX;
   Y := userY;
-  MessageBox(Self.Handle, PChar('开始启动自定义游戏：' + #$D + #$A + #$D + #$A +
-    '横向格子数目：' + IntToStr(X) + #$D + #$A +
-    '纵向格子数目：' + IntToStr(Y) + #$D + #$A +
-    '地雷数目：' + IntToStr(TotalLei)), '信息', MB_OK or MB_ICONINFORMATION);
+  MessageBox(Self.Handle, PChar('开始启动自定义游戏：' + #$D + #$A + #$D + #$A + '横向格子数目：' + IntToStr(X) + #$D + #$A + '纵向格子数目：' + IntToStr(Y) + #$D + #$A + '地雷数目：' +
+    IntToStr(TotalLei)), '信息', MB_OK or MB_ICONINFORMATION);
   GameEnd;
   GameStart;
   FormResize(Sender);
@@ -872,4 +858,3 @@ begin
 end;
 
 end.
-

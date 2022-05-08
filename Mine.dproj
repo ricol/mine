@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{A3996BBD-8605-4155-8CED-10152391ADF0}</ProjectGuid>
-        <MainSource>SaoLei.dpr</MainSource>
+        <MainSource>Mine.dpr</MainSource>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
         <ProjectVersion>15.1</ProjectVersion>
@@ -101,7 +101,7 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">SaoLei.dpr</Source>
+                    <Source Name="MainSource">Mine.dpr</Source>
                 </Source>
                 <Parameters/>
                 <VersionInfo>

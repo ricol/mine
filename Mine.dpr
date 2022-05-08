@@ -1,4 +1,4 @@
-program SaoLei;
+program Mine;
 
 uses
   Forms,
